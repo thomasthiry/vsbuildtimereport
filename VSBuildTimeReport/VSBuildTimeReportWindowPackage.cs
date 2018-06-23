@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using VSBuildTimeReport.Domain;
 using Task = System.Threading.Tasks.Task;
 
 namespace VSBuildTimeReport
