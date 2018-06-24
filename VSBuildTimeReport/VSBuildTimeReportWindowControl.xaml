@@ -10,9 +10,21 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Name="MyToolWindow">
     <Grid>
-        <StackPanel Orientation="Vertical" Margin="-10,10,10,0">
-            <TextBlock Margin="10" HorizontalAlignment="Center">Build Time Report</TextBlock>
-            <ListBox x:Name="listBox" Height="100" />
+        <StackPanel Orientation="Vertical" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="10" HorizontalAlignment="Center">Build Time Report</TextBlock>
+                <Button Margin="10" Content="Refresh" Click="ButtonBase_OnClick"></Button>
+            </StackPanel>
+            <ListBox x:Name="reportsList" Height="100">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="20">
+                            <TextBlock Text="{Binding Date}" Margin="0 0 0 30" />
+                            <TextBlock Text="{Binding TotalBuildTime}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
     </Grid>
 </UserControl>

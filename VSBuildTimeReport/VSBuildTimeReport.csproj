@@ -54,6 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Domain\BuildFileManager.cs" />
     <Compile Include="Domain\BuildRun.cs" />
     <Compile Include="BuildSession.cs" />
     <Compile Include="Domain\BuildReport.cs" />

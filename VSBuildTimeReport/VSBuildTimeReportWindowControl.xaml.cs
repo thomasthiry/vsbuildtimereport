@@ -1,4 +1,8 @@
-﻿namespace VSBuildTimeReport
+﻿using System;
+using System.Collections.Generic;
+using VSBuildTimeReport.Domain;
+
+namespace VSBuildTimeReport
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Windows;
@@ -17,18 +21,34 @@
             this.InitializeComponent();
         }
 
-        /// <summary>
-        /// Handles click on the button by displaying a message box.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event args.</param>
-        [SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "Sample code")]
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
-                "VSBuildTimeReportWindow");
+            var buildSession = new BuildSession
+            {
+                BuildRuns = new List<BuildRun>
+                {
+                    new BuildRun
+                    {
+                        BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
+                        BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
+                    },
+                    new BuildRun
+                    {
+                        BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
+                        BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
+                    },
+                    new BuildRun
+                    {
+                        BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
+                        BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
+                    },
+                }
+            };
+            var report = new BuildReport(buildSession);
+
+            var reportLines = report.GetDaily();
+
+            reportsList.DataContext = reportLines;
         }
     }
 }

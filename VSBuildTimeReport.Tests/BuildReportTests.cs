@@ -11,7 +11,7 @@ namespace VSBuildTimeReport.Tests
     public class BuildReportTests
     {
         [TestMethod]
-        public void GetDailyReport_SeveralBuildsOnSameDay_ReturnOneLine()
+        public void GetDailyReport_SeveralBuildsOnSameDay_ReturnOneLineWithSummedTime()
         {
             var buildSession = new BuildSession
             {

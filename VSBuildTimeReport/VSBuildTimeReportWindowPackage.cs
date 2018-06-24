@@ -103,10 +103,10 @@ namespace VSBuildTimeReport
             events = GetDTE().Events.SolutionEvents;
             events.Opened += Solution_Opened;
 
-            InitializeBuildSession();
+            BuildSession = InitializeBuildSession();
         }
 
-        private void InitializeBuildSession()
+        private BuildSession InitializeBuildSession()
         {
             var buildSession = File.Exists(BuildsFileName) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(BuildsFileName)) : null;
 
@@ -119,7 +119,7 @@ namespace VSBuildTimeReport
                     UserName = Environment.UserName
                 };
             }
-            BuildSession = buildSession;
+            return buildSession;
         }
 
         private static List<BuildRun> ReadBuildSessionFile()
