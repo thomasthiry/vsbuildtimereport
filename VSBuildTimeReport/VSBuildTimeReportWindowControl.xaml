@@ -12,19 +12,26 @@
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="10" HorizontalAlignment="Center">Build Time Report</TextBlock>
                 <Button Margin="10" Content="Refresh" Click="ButtonBase_OnClick"></Button>
             </StackPanel>
-            <ListBox x:Name="reportsList" Height="100">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="20">
-                            <TextBlock Text="{Binding Date}" Margin="0 0 0 30" />
-                            <TextBlock Text="{Binding TotalBuildTime}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <DataGrid Name="reportGrid" AutoGenerateColumns="False" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Date" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Total Build Time" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding TotalBuildTime}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalBuildTime}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>            
         </StackPanel>
     </Grid>
 </UserControl>

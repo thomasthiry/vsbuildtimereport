@@ -13,28 +13,70 @@ namespace VSBuildTimeReport.Tests
         [TestMethod]
         public void GetDailyReport_SeveralBuildsOnSameDay_ReturnOneLineWithSummedTime()
         {
-            var buildSession = new BuildSession
-            {
-                BuildRuns = new List<BuildRun>
+            var buildSession = new List<BuildSession> {
+                new BuildSession
                 {
-                    new BuildRun
+                    BuildRuns = new List<BuildRun>
                     {
-                        BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
-                    },
-                    new BuildRun
-                    {
-                        BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
-                    },
-                    new BuildRun
-                    {
-                        BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
-                    },
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
+                        },
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
+                        },
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
+                        },
+                    }
                 }
             };
             var report = new BuildReport(buildSession);
+
+            var reportLines = report.GetDaily();
+
+            reportLines.ShouldHaveSingleItem();
+            reportLines.First().TotalBuildTime.Seconds.ShouldBe(15);
+        }
+
+        [TestMethod]
+        public void GetDailyReport_SeveralBuildSessions_MergeRunsInReport()
+        {
+            var buildSessions = new List<BuildSession> {
+                new BuildSession
+                {
+                    BuildRuns = new List<BuildRun>
+                    {
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
+                        },
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
+                        },
+                    }
+                },
+                new BuildSession
+                {
+                    BuildRuns = new List<BuildRun>
+                    {
+                        new BuildRun
+                        {
+                            BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
+                            BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
+                        },
+                    }
+                }
+            };
+            var report = new BuildReport(buildSessions);
 
             var reportLines = report.GetDaily();
 

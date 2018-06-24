@@ -14,11 +14,9 @@ namespace VSBuildTimeReport.Domain
             _buildSessionFolder = buildSessionFolder;
         }
 
-        private static string BuildsFileName => $@"C:\Users\tth\AppData\Roaming\VSBuildTimeReport\BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
-
         private BuildSession ReadFile(string file)
         {
-            var buildSession = File.Exists(BuildsFileName) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(BuildsFileName)) : null;
+            var buildSession = File.Exists(file) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(file)) : null;
 
             if (buildSession == null)
             {

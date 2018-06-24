@@ -5,6 +5,7 @@ using VSBuildTimeReport.Domain;
 namespace VSBuildTimeReport
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -21,34 +22,41 @@ namespace VSBuildTimeReport
             this.InitializeComponent();
         }
 
+        private string _buildsFileName = $@"C:\Users\tth\AppData\Roaming\VSBuildTimeReport\"; // BuildSession_{DateTime.Today:yyyy-MM-dd}.json
+
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            var buildSession = new BuildSession
-            {
-                BuildRuns = new List<BuildRun>
-                {
-                    new BuildRun
-                    {
-                        BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
-                    },
-                    new BuildRun
-                    {
-                        BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
-                    },
-                    new BuildRun
-                    {
-                        BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
-                        BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
-                    },
-                }
-            };
-            var report = new BuildReport(buildSession);
+            //var buildSession = new BuildSession
+            //{
+            //    BuildRuns = new List<BuildRun>
+            //    {
+            //        new BuildRun
+            //        {
+            //            BuildStarted = new DateTime(2018, 6, 23, 16, 0, 0),
+            //            BuildEnded = new DateTime(2018, 6, 23, 16, 0, 5)
+            //        },
+            //        new BuildRun
+            //        {
+            //            BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
+            //            BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
+            //        },
+            //        new BuildRun
+            //        {
+            //            BuildStarted = new DateTime(2018, 6, 23, 18, 0, 0),
+            //            BuildEnded = new DateTime(2018, 6, 23, 18, 0, 5)
+            //        },
+            //    }
+            //};
+            //var report = new BuildReport(buildSession);
+            
+            var buildFieldManager = new BuildFileManager(_buildsFileName);
+            var buildSessions = buildFieldManager.GetAll();
+
+            var report = new BuildReport(buildSessions);
 
             var reportLines = report.GetDaily();
 
-            reportsList.DataContext = reportLines;
+            reportGrid.ItemsSource = reportLines;
         }
     }
 }
