@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Domain\BuildFileManager.cs" />
     <Compile Include="Domain\BuildRun.cs" />
-    <Compile Include="BuildSession.cs" />
+    <Compile Include="Domain\BuildSession.cs" />
     <Compile Include="Domain\BuildReport.cs" />
     <Compile Include="Domain\ReportLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

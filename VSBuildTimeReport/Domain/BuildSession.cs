@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using VSBuildTimeReport.Domain;
 
-namespace VSBuildTimeReport
+namespace VSBuildTimeReport.Domain
 {
     public class BuildSession
     {
