@@ -16,10 +16,10 @@
             </StackPanel>
             <DataGrid Name="reportGrid" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Date" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}">
+                    <DataGridTemplateColumn Header="Project" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding SolutionName}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}" />
+                                <TextBlock Text="{Binding SolutionName}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

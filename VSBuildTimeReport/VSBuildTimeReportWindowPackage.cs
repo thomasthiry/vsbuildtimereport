@@ -47,11 +47,12 @@ namespace VSBuildTimeReport
     [ProvideBindingPath]
     public sealed class VSBuildTimeReportWindowPackage : AsyncPackage, IVsUpdateSolutionEvents2
     {
-        private static string BuildsFileName => $@"C:\Users\tth\AppData\Roaming\VSBuildTimeReport\BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
-
         private IVsSolutionBuildManager2 sbm;
+
         private uint updateSolutionEventsCookie;
+
         private SolutionEvents events;
+
         private DTE dte;
 
         private BuildRun OngoingBuild;
@@ -106,9 +107,23 @@ namespace VSBuildTimeReport
             BuildSession = InitializeBuildSession();
         }
 
+        private static string GetBuildsFileName()
+        {
+            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
+            
+            if (Directory.Exists(buildTimeReportFolderPath) == false)
+            {
+                Directory.CreateDirectory(buildTimeReportFolderPath);
+            }
+            
+            var buildsFileName = $"BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
+
+            return Path.Combine(buildTimeReportFolderPath, buildsFileName);
+        }
+
         private BuildSession InitializeBuildSession()
         {
-            var buildSession = File.Exists(BuildsFileName) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(BuildsFileName)) : null;
+            var buildSession = File.Exists(GetBuildsFileName()) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(GetBuildsFileName())) : null;
 
             if (buildSession == null)
             {
@@ -124,7 +139,7 @@ namespace VSBuildTimeReport
 
         private static List<BuildRun> ReadBuildSessionFile()
         {
-            var buildRuns = JsonConvert.DeserializeObject<List<BuildRun>>(File.ReadAllText(BuildsFileName));
+            var buildRuns = JsonConvert.DeserializeObject<List<BuildRun>>(File.ReadAllText(GetBuildsFileName()));
             return buildRuns ?? new List<BuildRun>();
         }
 
@@ -169,7 +184,7 @@ namespace VSBuildTimeReport
 
         private void WriteBuildSessionFile()
         {
-            File.WriteAllText(BuildsFileName, JsonConvert.SerializeObject(BuildSession));
+            File.WriteAllText(GetBuildsFileName(), JsonConvert.SerializeObject(BuildSession));
         }
 
 
