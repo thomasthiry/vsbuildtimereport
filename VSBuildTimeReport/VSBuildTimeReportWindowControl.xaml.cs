@@ -32,7 +32,7 @@ namespace VSBuildTimeReport
 
             var report = new BuildReport(buildSessions);
 
-            var reportLines = report.GetDaily();
+            var reportLines = report.GetProjectsReport();
 
             reportGrid.ItemsSource = reportLines;
         }
