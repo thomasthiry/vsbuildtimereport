@@ -6,5 +6,6 @@ namespace VSBuildTimeReport.Domain
     {
         public DateTime Date { get; set; }
         public TimeSpan TotalBuildTime { get; set; }
+        public string SolutionName { get; set; }
     }
 }

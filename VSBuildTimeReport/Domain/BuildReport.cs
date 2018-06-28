@@ -15,11 +15,21 @@ namespace VSBuildTimeReport.Domain
 
         public IEnumerable<ReportLine> GetDaily()
         {
-            return Enumerable.GroupBy<BuildRun, string>(_buildSessions.SelectMany(s => s.BuildRuns), r => $"{r.BuildStarted:yyyyMMdd}").Select(group => new ReportLine
+            return _buildSessions.SelectMany(s => s.BuildRuns).GroupBy<BuildRun, string>(r => $"{r.BuildStarted:yyyyMMdd}").Select(group => new ReportLine
             {
                 Date = group.First().BuildStarted.Date,
                 TotalBuildTime = TimeSpan.FromSeconds(group.Sum(r => r.BuiltTimeInSeconds))
             });
+        }
+
+        public IEnumerable<ReportLine> GetProjectsReport()
+        {
+            return _buildSessions.SelectMany(s => s.BuildRuns).GroupBy<BuildRun, string>(r => r.SolutionName).Select(group => 
+                new ReportLine
+                {
+                    SolutionName = group.Key,
+                    TotalBuildTime = TimeSpan.FromSeconds(group.Sum(r => r.BuiltTimeInSeconds))
+                });
         }
     }
 }
