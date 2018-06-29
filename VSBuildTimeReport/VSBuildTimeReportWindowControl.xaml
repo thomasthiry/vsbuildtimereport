@@ -7,7 +7,7 @@
              Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="800"
              Name="MyToolWindow">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
@@ -16,17 +16,45 @@
             </StackPanel>
             <DataGrid Name="reportGrid" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Project" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding SolutionName}">
+                    <DataGridTemplateColumn Header="Project" Width="200" IsReadOnly="True" ClipboardContentBinding="{Binding SolutionName}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding SolutionName}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Total Build Time" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding TotalBuildTime}">
+                    <DataGridTemplateColumn Header="Total Build Time" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding TotalBuildTime, StringFormat=hh\\:mm\\:ss}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding TotalBuildTime}" />
+                                <TextBlock Text="{Binding TotalBuildTime, StringFormat=hh\\:mm\\:ss}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Total Number of Builds" Width="150" IsReadOnly="True" ClipboardContentBinding="{Binding TotalNumberOfBuilds}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TotalNumberOfBuilds}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Average Build Time" Width="150" IsReadOnly="True" ClipboardContentBinding="{Binding AverageBuildTime, StringFormat=hh\\:mm\\:ss}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding AverageBuildTime, StringFormat=hh\\:mm\\:ss}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="First Build" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding FirstBuildTime, StringFormat={}{0:dd-MM-yyyy}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FirstBuildTime, StringFormat={}{0:dd-MM-yyyy}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Last Build" Width="100" IsReadOnly="True" ClipboardContentBinding="{Binding LastBuildTime, StringFormat={}{0:dd-MM-yyyy}}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding LastBuildTime, StringFormat={}{0:dd-MM-yyyy}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
