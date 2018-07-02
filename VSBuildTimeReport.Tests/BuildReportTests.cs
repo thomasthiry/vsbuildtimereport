@@ -112,6 +112,7 @@ namespace VSBuildTimeReport.Tests
             reportLines.Single(l => l.SolutionName == project1).TotalBuildTime.Seconds.ShouldBe(25);
             reportLines.Single(l => l.SolutionName == project1).TotalNumberOfBuilds.ShouldBe(5);
             reportLines.Single(l => l.SolutionName == project1).AverageBuildTime.Seconds.ShouldBe(5);
+            reportLines.Single(l => l.SolutionName == project1).MaxBuildTime.Seconds.ShouldBe(9);
             reportLines.Single(l => l.SolutionName == project1).FirstBuildTime.ShouldBe(new DateTime(2018, 6, 23, 16, 0, 0));
             reportLines.Single(l => l.SolutionName == project1).LastBuildTime.ShouldBe(new DateTime(2018, 6, 23, 20, 0, 0));
         }

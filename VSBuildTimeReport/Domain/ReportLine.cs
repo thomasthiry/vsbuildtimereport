@@ -10,5 +10,6 @@ namespace VSBuildTimeReport.Domain
         public TimeSpan AverageBuildTime { get; set; }
         public DateTime FirstBuildTime { get; set; }
         public DateTime LastBuildTime { get; set; }
+        public TimeSpan MaxBuildTime { get; set; }
     }
 }

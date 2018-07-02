@@ -22,6 +22,7 @@ namespace VSBuildTimeReport.Domain
                     TotalBuildTime = TimeSpan.FromSeconds(group.Sum(r => r.BuiltTimeInSeconds)),
                     TotalNumberOfBuilds = group.Count(),
                     AverageBuildTime = TimeSpan.FromSeconds(group.Average(r => r.BuiltTimeInSeconds)),
+                    MaxBuildTime = TimeSpan.FromSeconds(group.Max(r => r.BuiltTimeInSeconds)),
                     FirstBuildTime = group.Min(b => b.BuildStarted),
                     LastBuildTime = group.Max(b => b.BuildStarted),
                 });
