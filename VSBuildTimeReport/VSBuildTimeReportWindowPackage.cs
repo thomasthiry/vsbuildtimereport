@@ -98,20 +98,6 @@ namespace VSBuildTimeReport
             BuildSession = InitializeBuildSession();
         }
 
-        private static string GetBuildsFileName()
-        {
-            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
-            
-            if (Directory.Exists(buildTimeReportFolderPath) == false)
-            {
-                Directory.CreateDirectory(buildTimeReportFolderPath);
-            }
-            
-            var buildsFileName = $"BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
-
-            return Path.Combine(buildTimeReportFolderPath, buildsFileName);
-        }
-
         private BuildSession InitializeBuildSession()
         {
             var buildSession = File.Exists(GetBuildsFileName()) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(GetBuildsFileName())) : null;
@@ -126,6 +112,20 @@ namespace VSBuildTimeReport
                 };
             }
             return buildSession;
+        }
+
+        private static string GetBuildsFileName()
+        {
+            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
+            
+            if (Directory.Exists(buildTimeReportFolderPath) == false)
+            {
+                Directory.CreateDirectory(buildTimeReportFolderPath);
+            }
+            
+            var buildsFileName = $"BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
+
+            return Path.Combine(buildTimeReportFolderPath, buildsFileName);
         }
 
         private DTE GetDTE()

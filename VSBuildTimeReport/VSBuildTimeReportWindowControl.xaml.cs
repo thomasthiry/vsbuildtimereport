@@ -27,7 +27,7 @@ namespace VSBuildTimeReport
         {            
             var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
 
-            var buildFileManager = new BuildFileManager(buildTimeReportFolderPath);
+            var buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
             var buildSessions = buildFileManager.GetAll();
 
             var report = new BuildReport(buildSessions);

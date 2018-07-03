@@ -8,10 +8,34 @@ namespace VSBuildTimeReport.Domain
     public class BuildFileManager
     {
         private readonly string _buildSessionFolder;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public BuildFileManager(string buildSessionFolder)
+        public BuildFileManager(string buildSessionFolder, IDateTimeProvider dateTimeProvider)
         {
             _buildSessionFolder = buildSessionFolder;
+            _dateTimeProvider = dateTimeProvider;
+        }
+
+        public IEnumerable<BuildSession> GetAll()
+        {
+            var files = Directory.GetFiles(_buildSessionFolder);
+
+            var buildSessions = new List<BuildSession>();
+            foreach (var file in files)
+            {
+                var buildSession = ReadFile(file);
+                buildSessions.Add(buildSession);
+            }
+
+            return buildSessions;
+        }
+
+        public BuildSession GetTodaysBuildSession()
+        {
+            var buildsFileName = $"BuildSession_{_dateTimeProvider.GetNow():yyyy-MM-dd}.json";
+            var buildsFilePath = Path.Combine(_buildSessionFolder, buildsFileName);
+
+            return ReadFile(buildsFilePath);
         }
 
         private BuildSession ReadFile(string file)
@@ -28,20 +52,6 @@ namespace VSBuildTimeReport.Domain
                 };
             }
             return buildSession;
-        }
-
-        public IEnumerable<BuildSession> GetAll()
-        {
-            var files = Directory.GetFiles(_buildSessionFolder);
-
-            var buildSessions = new List<BuildSession>();
-            foreach (var file in files)
-            {
-                var buildSession = ReadFile(file);
-                buildSessions.Add(buildSession);
-            }
-
-            return buildSessions;
         }
     }
 }

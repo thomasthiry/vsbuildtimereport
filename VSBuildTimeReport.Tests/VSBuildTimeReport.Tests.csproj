@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="BuildFileManagerTests.cs" />
     <Compile Include="BuildReportTests.cs" />
+    <Compile Include="DateTimeProviderMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

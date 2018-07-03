@@ -58,6 +58,8 @@
     <Compile Include="Domain\BuildRun.cs" />
     <Compile Include="Domain\BuildSession.cs" />
     <Compile Include="Domain\BuildReport.cs" />
+    <Compile Include="Domain\DateTimeProvider.cs" />
+    <Compile Include="Domain\IDateTimeProvider.cs" />
     <Compile Include="Domain\ReportLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VSBuildTimeReportWindow.cs" />
