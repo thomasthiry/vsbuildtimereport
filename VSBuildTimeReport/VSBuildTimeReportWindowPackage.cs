@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using VSBuildTimeReport.Domain;
 using Task = System.Threading.Tasks.Task;
@@ -47,15 +40,13 @@ namespace VSBuildTimeReport
     [ProvideBindingPath]
     public sealed class VSBuildTimeReportWindowPackage : AsyncPackage, IVsUpdateSolutionEvents2
     {
-        private IVsSolutionBuildManager2 sbm;
+        private IVsSolutionBuildManager2 _sbm;
 
-        private uint updateSolutionEventsCookie;
+        private SolutionEvents _events;
 
-        private SolutionEvents events;
+        private DTE _dte;
 
-        private DTE dte;
-
-        private BuildRun OngoingBuild;
+        private BuildRun _ongoingBuild;
 
         public string SolutionName { get; set; }
 
@@ -94,15 +85,15 @@ namespace VSBuildTimeReport
             await VSBuildTimeReportWindowCommand.InitializeAsync(this);
 
             // Get solution build manager
-            sbm = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager2;
-            if (sbm != null)
+            _sbm = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager2;
+            if (_sbm != null)
             {
-                sbm.AdviseUpdateSolutionEvents(this, out updateSolutionEventsCookie);
+                _sbm.AdviseUpdateSolutionEvents(this, out _);
             }
 
             // Must hold a reference to the solution events object or the events wont fire, garbage collection related
-            events = GetDTE().Events.SolutionEvents;
-            events.Opened += Solution_Opened;
+            _events = GetDTE().Events.SolutionEvents;
+            _events.Opened += Solution_Opened;
 
             BuildSession = InitializeBuildSession();
         }
@@ -137,19 +128,13 @@ namespace VSBuildTimeReport
             return buildSession;
         }
 
-        private static List<BuildRun> ReadBuildSessionFile()
-        {
-            var buildRuns = JsonConvert.DeserializeObject<List<BuildRun>>(File.ReadAllText(GetBuildsFileName()));
-            return buildRuns ?? new List<BuildRun>();
-        }
-
         private DTE GetDTE()
         {
-            if (dte == null)
+            if (_dte == null)
             {
-                dte = ServiceProvider.GlobalProvider.GetService(typeof(SDTE)) as DTE;
+                _dte = ServiceProvider.GlobalProvider.GetService(typeof(SDTE)) as DTE;
             }
-            return dte;
+            return _dte;
         }
 
         private void Solution_Opened()
@@ -167,15 +152,15 @@ namespace VSBuildTimeReport
 
         public int UpdateSolution_Begin(ref int pfCancelUpdate)
         {
-            OngoingBuild = new BuildRun { SolutionName = SolutionName, BuildStarted = DateTime.Now };
+            _ongoingBuild = new BuildRun { SolutionName = SolutionName, BuildStarted = DateTime.Now };
             return VSConstants.S_OK;
         }
 
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
-            OngoingBuild.BuildEnded = DateTime.Now;
-            BuildSession.BuildRuns.Add(OngoingBuild);
-            OngoingBuild = null;
+            _ongoingBuild.BuildEnded = DateTime.Now;
+            BuildSession.BuildRuns.Add(_ongoingBuild);
+            _ongoingBuild = null;
 
             WriteBuildSessionFile();
 

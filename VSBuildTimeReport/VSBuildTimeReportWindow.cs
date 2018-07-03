@@ -1,14 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.IO;
-using EnvDTE;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell.Interop;
-using Newtonsoft.Json;
-
-namespace VSBuildTimeReport
+﻿namespace VSBuildTimeReport
 {
-    using System;
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.Shell;
 
