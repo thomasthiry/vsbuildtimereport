@@ -95,6 +95,11 @@ namespace VSBuildTimeReport
             _events = GetDTE().Events.SolutionEvents;
             _events.Opened += Solution_Opened;
 
+            LoadAndInitializeBuildSession();
+        }
+
+        private void LoadAndInitializeBuildSession()
+        {
             var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
             var buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
             BuildSession = buildFileManager.GetTodaysBuildSession();
