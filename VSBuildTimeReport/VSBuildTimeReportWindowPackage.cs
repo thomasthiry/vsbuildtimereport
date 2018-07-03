@@ -95,23 +95,9 @@ namespace VSBuildTimeReport
             _events = GetDTE().Events.SolutionEvents;
             _events.Opened += Solution_Opened;
 
-            BuildSession = InitializeBuildSession();
-        }
-
-        private BuildSession InitializeBuildSession()
-        {
-            var buildSession = File.Exists(GetBuildsFileName()) ? JsonConvert.DeserializeObject<BuildSession>(File.ReadAllText(GetBuildsFileName())) : null;
-
-            if (buildSession == null)
-            {
-                buildSession = new BuildSession
-                {
-                    StartTime = DateTime.Now,
-                    MachineName = Environment.MachineName,
-                    UserName = Environment.UserName
-                };
-            }
-            return buildSession;
+            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
+            var buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
+            BuildSession = buildFileManager.GetTodaysBuildSession();
         }
 
         private static string GetBuildsFileName()

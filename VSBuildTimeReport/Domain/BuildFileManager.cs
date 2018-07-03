@@ -35,7 +35,19 @@ namespace VSBuildTimeReport.Domain
             var buildsFileName = $"BuildSession_{_dateTimeProvider.GetNow():yyyy-MM-dd}.json";
             var buildsFilePath = Path.Combine(_buildSessionFolder, buildsFileName);
 
-            return ReadFile(buildsFilePath);
+            if (File.Exists(buildsFilePath))
+            {
+                return ReadFile(buildsFilePath);
+            }
+            else
+            {
+                return  new BuildSession
+                {
+                    StartTime = _dateTimeProvider.GetNow(),
+                    MachineName = Environment.MachineName,
+                    UserName = Environment.UserName
+                };
+            }
         }
 
         private BuildSession ReadFile(string file)
