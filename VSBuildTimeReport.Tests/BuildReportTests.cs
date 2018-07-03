@@ -31,7 +31,7 @@ namespace VSBuildTimeReport.Tests
                         {
                             SolutionName = project1,
                             BuildStarted = new DateTime(2018, 6, 23, 17, 0, 0),
-                            BuildEnded = new DateTime(2018, 6, 23, 17, 0, 5)
+                            BuildEnded = new DateTime(2018, 6, 23, 17, 3, 0)
                         },
                         new BuildRun
                         {
@@ -58,8 +58,8 @@ namespace VSBuildTimeReport.Tests
 
             var reportLines = report.GetProjectsReport();
 
-            reportLines.Single(l => l.SolutionName == project1).TotalBuildTime.Seconds.ShouldBe(10);
-            reportLines.Single(l => l.SolutionName == project2).TotalBuildTime.Seconds.ShouldBe(15);
+            reportLines.Single(l => l.SolutionName == project1).TotalBuildTime.TotalSeconds.ShouldBe(185);
+            reportLines.Single(l => l.SolutionName == project2).TotalBuildTime.TotalSeconds.ShouldBe(15);
         }
 
         [TestMethod]
@@ -109,10 +109,10 @@ namespace VSBuildTimeReport.Tests
 
             var reportLines = report.GetProjectsReport();
 
-            reportLines.Single(l => l.SolutionName == project1).TotalBuildTime.Seconds.ShouldBe(25);
+            reportLines.Single(l => l.SolutionName == project1).TotalBuildTime.TotalSeconds.ShouldBe(25);
             reportLines.Single(l => l.SolutionName == project1).TotalNumberOfBuilds.ShouldBe(5);
-            reportLines.Single(l => l.SolutionName == project1).AverageBuildTime.Seconds.ShouldBe(5);
-            reportLines.Single(l => l.SolutionName == project1).MaxBuildTime.Seconds.ShouldBe(9);
+            reportLines.Single(l => l.SolutionName == project1).AverageBuildTime.TotalSeconds.ShouldBe(5);
+            reportLines.Single(l => l.SolutionName == project1).MaxBuildTime.TotalSeconds.ShouldBe(9);
             reportLines.Single(l => l.SolutionName == project1).FirstBuildTime.ShouldBe(new DateTime(2018, 6, 23, 16, 0, 0));
             reportLines.Single(l => l.SolutionName == project1).LastBuildTime.ShouldBe(new DateTime(2018, 6, 23, 20, 0, 0));
         }

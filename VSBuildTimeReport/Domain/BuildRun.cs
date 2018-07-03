@@ -7,6 +7,6 @@ namespace VSBuildTimeReport.Domain
         public string SolutionName { get; set; }
         public DateTime BuildStarted { get; set; }
         public DateTime BuildEnded { get; set; }
-        public long BuiltTimeInSeconds => (BuildEnded - BuildStarted).Seconds;
+        public double BuildTimeInSeconds => (BuildEnded - BuildStarted).TotalSeconds;
     }
 }

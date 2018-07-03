@@ -19,10 +19,10 @@ namespace VSBuildTimeReport.Domain
                 new ReportLine
                 {
                     SolutionName = group.Key,
-                    TotalBuildTime = TimeSpan.FromSeconds(group.Sum(r => r.BuiltTimeInSeconds)),
+                    TotalBuildTime = TimeSpan.FromSeconds(group.Sum(r => r.BuildTimeInSeconds)),
                     TotalNumberOfBuilds = group.Count(),
-                    AverageBuildTime = TimeSpan.FromSeconds(group.Average(r => r.BuiltTimeInSeconds)),
-                    MaxBuildTime = TimeSpan.FromSeconds(group.Max(r => r.BuiltTimeInSeconds)),
+                    AverageBuildTime = TimeSpan.FromSeconds(group.Average(r => r.BuildTimeInSeconds)),
+                    MaxBuildTime = TimeSpan.FromSeconds(group.Max(r => r.BuildTimeInSeconds)),
                     FirstBuildTime = group.Min(b => b.BuildStarted),
                     LastBuildTime = group.Max(b => b.BuildStarted),
                 });
