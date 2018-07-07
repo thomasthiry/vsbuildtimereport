@@ -47,6 +47,7 @@ namespace VSBuildTimeReport
         private DTE _dte;
 
         private BuildRun _ongoingBuild;
+        private readonly BuildFileManager _buildFileManager;
 
         public string SolutionName { get; set; }
 
@@ -66,7 +67,10 @@ namespace VSBuildTimeReport
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
-        }
+
+            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
+
+            _buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());     }
 
         #region Package Members
 
@@ -100,23 +104,8 @@ namespace VSBuildTimeReport
 
         private void LoadAndInitializeBuildSession()
         {
-            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
-            var buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
-            BuildSession = buildFileManager.GetTodaysBuildSession();
-        }
 
-        private static string GetBuildsFileName()
-        {
-            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
-            
-            if (Directory.Exists(buildTimeReportFolderPath) == false)
-            {
-                Directory.CreateDirectory(buildTimeReportFolderPath);
-            }
-            
-            var buildsFileName = $"BuildSession_{DateTime.Today:yyyy-MM-dd}.json";
-
-            return Path.Combine(buildTimeReportFolderPath, buildsFileName);
+            BuildSession = _buildFileManager.GetTodaysBuildSession();
         }
 
         private DTE GetDTE()
@@ -135,9 +124,8 @@ namespace VSBuildTimeReport
 
         private string GetSolutionName()
         {
-            object solutionName;
             var vsSolution = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolution)) as IVsSolution2;
-            vsSolution.GetProperty((int)__VSPROPID.VSPROPID_SolutionBaseName, out solutionName);
+            vsSolution.GetProperty((int)__VSPROPID.VSPROPID_SolutionBaseName, out var solutionName);
             return (string)solutionName;
         }
 
@@ -153,16 +141,10 @@ namespace VSBuildTimeReport
             BuildSession.BuildRuns.Add(_ongoingBuild);
             _ongoingBuild = null;
 
-            WriteBuildSessionFile();
+            _buildFileManager.WriteBuildSessionFile(BuildSession);
 
             return VSConstants.S_OK;
         }
-
-        private void WriteBuildSessionFile()
-        {
-            File.WriteAllText(GetBuildsFileName(), JsonConvert.SerializeObject(BuildSession));
-        }
-
 
         public int UpdateSolution_StartUpdate(ref int pfCancelUpdate)
         {

@@ -9,6 +9,8 @@ namespace VSBuildTimeReport.Domain
     {
         private readonly string _buildSessionFolder;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private string BuildsFileName => $"BuildSession_{_dateTimeProvider.GetNow():yyyy-MM-dd}.json";
+        private string BuildsFilePath => Path.Combine(_buildSessionFolder, BuildsFileName);
 
         public BuildFileManager(string buildSessionFolder, IDateTimeProvider dateTimeProvider)
         {
@@ -32,12 +34,9 @@ namespace VSBuildTimeReport.Domain
 
         public BuildSession GetTodaysBuildSession()
         {
-            var buildsFileName = $"BuildSession_{_dateTimeProvider.GetNow():yyyy-MM-dd}.json";
-            var buildsFilePath = Path.Combine(_buildSessionFolder, buildsFileName);
-
-            if (File.Exists(buildsFilePath))
+            if (File.Exists(BuildsFilePath))
             {
-                return ReadFile(buildsFilePath);
+                return ReadFile(BuildsFilePath);
             }
             else
             {
@@ -64,6 +63,16 @@ namespace VSBuildTimeReport.Domain
                 };
             }
             return buildSession;
+        }
+
+        public void WriteBuildSessionFile(BuildSession buildSession)
+        {
+            if (Directory.Exists(_buildSessionFolder) == false)
+            {
+                Directory.CreateDirectory(_buildSessionFolder);
+            }
+
+            File.WriteAllText(BuildsFilePath, JsonConvert.SerializeObject(buildSession));
         }
     }
 }
