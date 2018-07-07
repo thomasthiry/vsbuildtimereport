@@ -12,7 +12,7 @@
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10">
             <StackPanel Orientation="Horizontal">
-                <Button Margin="10" Content="Refresh" Click="ButtonBase_OnClick"></Button>
+                <Button Margin="10" Content="Refresh" Click="ButtonRefresh_OnClick"></Button>
             </StackPanel>
             <DataGrid Name="reportGrid" AutoGenerateColumns="False" >
                 <DataGrid.Columns>

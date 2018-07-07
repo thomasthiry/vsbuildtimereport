@@ -23,7 +23,7 @@ namespace VSBuildTimeReport
             this.InitializeComponent();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e)
         {            
             var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
 
