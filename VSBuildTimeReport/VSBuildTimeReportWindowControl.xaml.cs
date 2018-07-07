@@ -21,11 +21,19 @@ namespace VSBuildTimeReport
         public VSBuildTimeReportWindowControl()
         {
             this.InitializeComponent();
+
+            RefreshData();
         }
 
         private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e)
-        {            
-            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
+        {
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "VSBuildTimeReport");
 
             var buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
             var buildSessions = buildFileManager.GetAll();
