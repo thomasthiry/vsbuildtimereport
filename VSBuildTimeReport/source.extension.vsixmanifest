@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSBuildTimeReport.ac424bbd-c65b-4668-a286-b95661b5b98b" Version="1.0" Language="en-US" Publisher="Microsoft" />
-        <DisplayName>VSBuildTimeReport</DisplayName>
-        <Description>Empty VSIX Project.</Description>
+        <Identity Id="VSBuildTimeReport" Version="0.1.0" Language="en-US" Publisher="Thomas Thiry" />
+        <DisplayName>Build Time Report</DisplayName>
+        <Description>This extension will help you track the time of all the builds you run in Visual Studio in order to track improvements you try to achieve.</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 16.0)" />
