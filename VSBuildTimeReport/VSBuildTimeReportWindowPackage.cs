@@ -113,11 +113,11 @@ namespace VSBuildTimeReport
         {
             try
             {
-                var det2 = GetDTE() as EnvDTE80.DTE2;
+                var dte2 = GetDTE() as EnvDTE80.DTE2;
 
-                if (det2 == null) return;
+                if (dte2 == null) return;
 
-                var pane = det2.ToolWindows.OutputWindow.ActivePane;
+                var pane = dte2.ToolWindows.OutputWindow.ActivePane;
 
                 pane.OutputString(context);
             }
