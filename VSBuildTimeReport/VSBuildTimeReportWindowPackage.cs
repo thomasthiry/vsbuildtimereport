@@ -159,9 +159,7 @@ namespace VSBuildTimeReport
             _ongoingBuild.BuildEnded = DateTime.Now;
             BuildSession.BuildRuns.Add(_ongoingBuild);
 
-            WriteToOutputWindow(
-                string.Format("========== Build Time : {0} s ==========\r\n",
-                _ongoingBuild.BuildTimeInSeconds));
+            WriteToOutputWindow($"========== Build Time : {_ongoingBuild.BuildTimeInSeconds:0.000} seconds ==========\r\n");
 
             _ongoingBuild = null;
 
