@@ -70,7 +70,8 @@ namespace VSBuildTimeReport
 
             var buildTimeReportFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSBuildTimeReport");
 
-            _buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());     }
+            _buildFileManager = new BuildFileManager(buildTimeReportFolderPath, new DateTimeProvider());
+        }
 
         #region Package Members
 
@@ -108,6 +109,24 @@ namespace VSBuildTimeReport
             BuildSession = _buildFileManager.GetTodaysBuildSession();
         }
 
+        private void WriteToOutputWindow(string context)
+        {
+            try
+            {
+                var dte2 = GetDTE() as EnvDTE80.DTE2;
+
+                if (dte2 == null) return;
+
+                var pane = dte2.ToolWindows.OutputWindow.ActivePane;
+
+                pane.OutputString(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         private DTE GetDTE()
         {
             if (_dte == null)
@@ -139,6 +158,11 @@ namespace VSBuildTimeReport
         {
             _ongoingBuild.BuildEnded = DateTime.Now;
             BuildSession.BuildRuns.Add(_ongoingBuild);
+
+            WriteToOutputWindow(
+                string.Format("========== Build Time : {0} s ==========\r\n",
+                _ongoingBuild.BuildTimeInSeconds));
+
             _ongoingBuild = null;
 
             _buildFileManager.WriteBuildSessionFile(BuildSession);
